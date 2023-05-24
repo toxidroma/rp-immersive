@@ -1,0 +1,7 @@
+{
+    "name": "garrys-package",
+    "files": {
+        "lua/packages/garrys-package/package.lua": "https://raw.githubusercontent.com/toxidroma/garrys-package/main/lua/packages/garrys-package/package.lua",
+        "lua/packages/garrys-package/init.lua": "https://raw.githubusercontent.com/toxidroma/garrys-package/main/lua/packages/garrys-package/init.lua"
+    }
+}
