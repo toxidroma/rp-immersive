@@ -10,16 +10,28 @@ server  = true
 menu    = false
 
 --if false, the package will wait for import from another package before it executes
-autorun = true
+autorun = false
 
 --don't touch it if you don't know what you're doing
 isolation = true
 
 -- client files
-send = nil --{
-            --"my/client/file.lua"
-            --"my/client/file2.lua"
-        --}
+send = {
+    'extension.lua'
+    'act.lua'
+    'animtable.lua'
+    'battle.lua'
+    'binds.lua'
+    'crosshair.lua'
+    'hands.lua'
+    'stance.lua'
+    'state.lua'
+    'states.lua'
+    'things.lua'
+    'inventory.lua'
+    'inertia.lua'
+    'misadventure.lua'
+}
 
 --if false, the logger will not be created by default
 logger = false
