@@ -3,7 +3,7 @@ import Create from ents
 import Run from hook
 import random from math
 import Empty from table
-import TraceLine, GetSurfaceData from util
+import TraceHull, TraceLine, GetSurfaceData from util
 with gm
     .CanInteract = (ply, ent) => 
         return ent\CanInteract ply if ent.CanInteract
@@ -95,7 +95,7 @@ export class THING extends ENTITY
         Pos: Vector!
         Ang: Angle!
 
-    @ImpactSound: nil
+    @ImpactSound: 'popcan.impacthard'
 
     @CanInteract: (ply) => 
         if ply\DoingSomething!
@@ -230,7 +230,7 @@ class PICK_UP extends ACT
         anim, snd, cycle = 'g_lookatthis', 'PickupThing', .23
         if @ply\EyeAngles!.p >= 45
             anim, cycle = 'pickup_generic_offhand', .5
-        @Spasm sequence: anim
+        @Spasm sequence: anim, SS: true
         @CYCLE cycle, => 
             if SERVER
                 with @thing
@@ -253,7 +253,7 @@ class PLACE extends ACT
         anim, cycle, speed = 'range_slam', .23, 1
         --if @ply\EyeAngles!.p >= 23
         --    anim = 'g_palm_out_r'
-        @Spasm sequence: anim, speed: speed
+        @Spasm sequence: anim, speed: speed, SS: true
         @CYCLE cycle, => 
             if SERVER
                 with @thing
@@ -282,7 +282,7 @@ class THROW extends ACT
     Impossible: => true unless IsValid(@thing) and @ply\Wielding! == @thing
     Do: (fromstate) =>
         anim, snd, cycle = 'gesture_throw_grenade', 'ThrowThing', .25
-        @Spasm sequence: anim
+        @Spasm sequence: anim, SS: true
         @CYCLE cycle, => 
             if IsFirstTimePredicted! and SERVER
                 @ply\Release @thing

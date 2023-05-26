@@ -6,8 +6,12 @@ require 'ipr-base',     'https://github.com/Pika-Software/ipr-base'
 include'extension.lua'
 
 import band, bnot from bit
+import Run from hook
 import abs, min, max from math
+import InQuad from math.ease
+import find from string
 import insert, remove, FlipKeyValues from table
+import Wait from timer
 import TraceLine, TraceHull, TraceEntity from util
 
 export ACT      = include'act.lua'
@@ -184,12 +188,13 @@ class IMMERSIVE extends PLYCLASS
     }
     GetInventoryLayout: => @InventoryLayout
 
-    Loadout: => @Player\Give 'hands'
-    Spawn: =>
+    Spawn: => 
         super!
+        @Player\Give 'hands'
         @Player\SetCanZoom false
         @Player\AllowFlashlight false
-        @Player\DetachRagdoll!
+        @Player\SetFallen false
+        @Player\CrosshairDisable true
         INVENTORY_SLOTTED\Summon @Player
     Death: => 
 
@@ -311,3 +316,85 @@ with gmod.GetGamemode!
 		rate = max rate, .5 if ply\WaterLevel! >= 2
 		rate = .1 if ply\IsOnGround! and len >= 1000
 		ply\SetPlaybackRate rate
+    if CLIENT
+        hidden =
+            CHudHealth: true
+            CHudBattery: true
+            CHudAmmo: true
+            CHudSecondaryAmmo: true
+            CHudCrosshair: true
+            CHudHistoryResource: true
+            CHudPoisonDamageIndicator: true
+            CHudSquadStatus: true
+            CHUDQuickInfo: true
+            CHudWeaponSelection: true
+            
+        .HUDShouldDraw = (element) => 
+            return false if hidden[element]
+            true
+    if SERVER
+        .PlayerSpawn = (ply) =>
+            player_manager.SetPlayerClass(ply, 'player/immersive')
+            Run 'PlayerSetModel', ply
+            with ply
+                \RunClass 'Spawn'
+                \CrosshairDisable!
+                .Doing\Kill! if .Doing
+                \SetCollisionGroup COLLISION_GROUP_PLAYER
+        Wait 0, ->
+            hook.Add 'PlayerInitialSpawn', tostring(_PKG), (ply) ->
+                return if ply\Loaded!
+                hook.Add 'SetupMove', tostring(_PKG)..ply\UserID!, (ply2, mv, cmd) ->
+                    if ply == ply2 and not cmd\IsForced!
+                        hook.Remove 'SetupMove', tostring(_PKG)..ply\UserID!
+                        Run 'PlayerInitialized', ply
+            hook.Add 'PlayerDisconnected', tostring(_PKG), (ply) ->
+                hook.Remove 'SetupMove', tostring(_PKG)..ply\UserID!
+        hook.Add 'PlayerInitialized', tostring(_PKG), (ply) ->
+            ply\Spawn!
+            nil
+
+if CLIENT
+    hook.Add 'RenderScene', tostring(_PKG), ->
+        ply = LocalPlayer!
+        if IsValid ply
+            hook.Remove 'RenderScene', tostring(_PKG)
+            Run 'PlayerInitialized', ply
+        return
+    hook.Add 'ShutDown', tostring(_PKG), ->
+        hook.Remove 'ShutDown', tostring(_PKG)
+        ply = LocalPlayer!
+        if IsValid ply
+            Run 'PlayerDisconnected', ply
+        return
+
+with FindMetaTable 'CMoveData'
+    .RemoveKey = (key) =>
+        if @KeyDown key
+            newbuttons = band @GetButtons!, bnot key
+            @SetButtons newbuttons
+    .RemoveKeys = (keys) =>
+        -- Using bitwise operations to clear the key bits.
+        newbuttons = band @GetButtons!, bnot keys
+        @SetButtons newbuttons
+
+hook.Add 'AllowPlayerPickup', tostring(_PKG), (ply, ent) -> false
+
+NO = {
+    '+use'
+    '+voicerecord'
+    --'+menu_context' -- there needs to be a bind for the Device
+    'messagemode'
+    '+zoom'
+}
+
+hook.Add 'PlayerBindPress', tostring(_PKG), (ply, bind, down) ->
+    if down
+        return true if find bind, fuckedoff for fuckedoff in *NO
+
+export class UPLINK_READY extends UPLINK
+    @Callback: (ply) => 
+        return unless IsValid ply
+        return if ply\GetNWBool _PKG\GetIdentifier'loaded'
+        ply\SetNWBool _PKG\GetIdentifier'loaded', true
+        ply\Spawn!

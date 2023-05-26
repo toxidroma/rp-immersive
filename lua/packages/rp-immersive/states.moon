@@ -20,7 +20,7 @@ class PRIMED extends STATE
 class ACTING extends STATE
     Enter: (ply, oldstate) => ply.Doing\Do(oldstate) if ply.Doing
     StartCommand: (ply, cmd) =>
-        if ply\DoingSomething!
+        if ply\DoingSomething! and ply.Doing
             return ply.Doing\Kill! if ply.Doing\Impossible!
             with cmd
                 if ply.Doing.Immobilizes

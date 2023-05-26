@@ -1,3 +1,4 @@
+AddCSLuaFile!
 import Create from ents
 import Run from hook
 with gmod.GetGamemode!

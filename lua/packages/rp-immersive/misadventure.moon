@@ -23,7 +23,7 @@ BIND 'fallover',
     KEY_T, {
         Press: (ply) =>
             with ply
-                return if IsValid ply\GetRagdollEntity!
+                return if ply\GetFallen!
                 unless \DoingSomething!
                     if SERVER
                         \FallOver!
@@ -111,22 +111,34 @@ with FindMetaTable 'Player'
             mins: bound.mins 
             maxs: bound.maxs
             filter: @RunClass 'GetTraceFilter'
-    if SERVER
-        .FallOver = (dmg) =>
-            rag = @CreateRagdoll!
-        .StandUp = =>
-            rag = @GetRagdollEntity!
-            return unless IsValid rag
-            return if rag\GetVelocity!\Length2D() > 8
-            chest = rag\LookupBone 'ValveBiped.Bip01_Spine'
-            pos, ang = rag\GetBonePosition chest
-            res = pos + ang\Forward! * 8
-            if res.y > pos.y 
-                @Do ACT.STAND_FRONT 
-            else
-                @Do ACT.STAND_BACK
+    .FallOver = (dmg) =>
+        rag = @CreateRagdoll! if SERVER
+    .StandUp = =>
+        rag = @GetRagdollEntity!
+        return unless IsValid rag
+        return if rag\GetVelocity!\Length2D() > 8
+        chest = rag\LookupBone 'ValveBiped.Bip01_Spine'
+        pos, ang = rag\GetBonePosition chest
+        res = pos + ang\Forward! * 8
+        if res.y > pos.y 
+            @Do ACT.STAND_FRONT 
+        else
+            @Do ACT.STAND_BACK
+        if SERVER
             @RemoveRagdoll!
             @UnSpectate!
+
+hook.Add 'PlayerRagdollCreated', _PKG\GetIdentifier'misadventure', (ply, rag) ->
+    ply\SetFallen true
+    nil
+
+hook.Add 'PlayerRagdollRemoved', _PKG\GetIdentifier'misadventure', (ply, rag) ->
+    ply\SetFallen false
+    ply\SetPos ply\GetPos! + Vector 0, 0, 16 if ply\IsStuck!
+    vel = Vector!
+    vel = rag\GetVelocity! if IsValid rag
+    ply\SetLocalVelocity vel
+    nil
 
 hook.Add 'SetupMove', _PKG\GetIdentifier'misadventure', (ply, mv, cmd) ->
     return if ply\GetMoveType! == MOVETYPE_NOCLIP

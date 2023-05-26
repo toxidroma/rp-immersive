@@ -85,12 +85,12 @@ export class CROSSHAIR
         if ret = Run 'LockTarget', @TARGET
             return ret
         @TARGET.locked = true
-        if @TARGET.entity\GetClass!\StartWith 'thing'
-            @TARGET.notice = NOTICE {
-                text: "<font=CloseCaption_Bold>#{@TARGET.entity.Name}\n<font=CloseCaption_Normal>#{@TARGET.entity\GetDescription!}"
-                duration: 3
-                Perpetual: -> @TARGET and @TARGET.locked
-            }
+        --if @TARGET.entity\GetClass!\StartWith 'thing'
+            --@TARGET.notice = NOTICE {
+            --    text: "<font=CloseCaption_Bold>#{@TARGET.entity.Name}\n<font=CloseCaption_Normal>#{@TARGET.entity\GetDescription!}"
+            --    duration: 3
+            --    Perpetual: -> @TARGET and @TARGET.locked
+            --}
     @LoseTarget:    => 
         @TARGET.locked = false
         @TARGET.forgettime = CurTime! + 2.23
