@@ -80,7 +80,7 @@ with FindMetaTable 'Player'
                 @LagCompensation false
         traces
     .GetBody = =>
-        unless @Alive!
+        if (@GetFallen and @GetFallen!) or not @Alive!
             rag = @GetNW2Entity 'improved-player-ragdolls'
             if rag and rag\IsValid!
                 return rag
@@ -115,7 +115,7 @@ with FindMetaTable 'Player'
     import ACTS from ACT
 
     .DoingSomething = =>
-        return @Doing and @GetState! == STATE.ACTING
+        return @GetState! == STATE.ACTING
     .Do = (act, ...) =>
         return if @DoingSomething!
         if isnumber act
@@ -164,6 +164,8 @@ hook.Add 'SetupPlayerDataTables', tostring(_PKG), (classy) ->
         .Player\SetStance STANCE_RISEN
     nil
 
+export FOV, FOV_TARGET = 110, 110
+
 class IMMERSIVE extends PLYCLASS
     DisplayName:        'Immersive Player'
     UseDynamicView:     true
@@ -202,6 +204,12 @@ class IMMERSIVE extends PLYCLASS
     StartMove: (mv, cmd) => 
         mv\SetButtons band mv\GetButtons!, bnot(IN_JUMP + IN_DUCK)
         return
+    FinishMove: (mv) =>
+        rag = @Player\GetRagdollEntity!
+        if IsValid rag
+            @Player\SetPos rag\GetPos!
+            rag.lastVelocity = rag\GetVelocity!
+            true
     GetViewOrigin: =>
         pos, ang = super!
         if @UseDynamicView
@@ -222,18 +230,48 @@ class IMMERSIVE extends PLYCLASS
                     collisiongroup: COLLISION_GROUP_PLAYER_MOVEMENT
                 pos = trace.HitPos
         pos, ang
+    GetTraceFilter: => {@Player, @Player\GetBody!, @Player\Wielding!}
+    GetHandPosition: =>
+        index = @Player\LookupAttachment 'anim_attachment_RH'
+        return super! unless index
+        if att = @Player\GetAttachment index
+            att.Pos, att.Ang
 
     --CLIENT
-    --CalcView: (view) => view.drawviewer = true
+    CalcView: (view) =>
+        super view
+        FOV_TARGET = 110
+        if @UseDynamicView
+            view.drawviewer = true
+            view.znear = 1
+        if CROSSHAIR and CROSSHAIR.TARGET and CROSSHAIR.TARGET.inspection
+            FOV_TARGET -= 23
+        FOV = Lerp InQuad(FrameTime!*23), FOV, FOV_TARGET
+        view.fov = FOV
+        view
     PostDrawOpaqueRenderables: => CROSSHAIR\Run LocalPlayer!\GetInteractTrace!
     ShouldDrawLocal: => true
     InputMouseApply: (cmd, x, y, ang) =>
         return if abs(x) + abs(y) <= 0
-        if @Player\DoingSomething! and @Player.Doing.Immobilizes
+        if @Player\DoingSomething! and @Player.Doing and @Player.Doing.Immobilizes
             with cmd
                 \SetMouseX 0
                 \SetMouseY 0
             true
+    PreDraw: (ent, flags) =>
+        if @Player == LocalPlayer! and @UseDynamicView and (render.IsTrueFirstPerson! or @Player\WaterLevel! >= 2)
+            cvar = GetConVar('configurable_view') 
+            return if cvar and cvar\GetInt! != 0
+            ent\AttemptBoneScale bone, Vector! for bone in *{'ValveBiped.Bip01_Head1', 'ValveBiped.Bip01_Neck1'}
+    PostDraw: (ent, flags) =>
+        if @UseDynamicView
+            cvar = GetConVar('configurable_view') 
+            return if cvar and cvar\GetInt! != 0
+            ent\AttemptBoneScale bone, Vector 1, 1, 1 for bone in *{'ValveBiped.Bip01_Head1', 'ValveBiped.Bip01_Neck1'}
+    PrePlayerDraw: (flags) =>
+        return true if IsValid @Player\GetRagdollEntity!
+        @PreDraw @Player, flags
+    PostPlayerDraw: (flags) => @PostDraw @Player, flags
 
 with gmod.GetGamemode!
     .DoAnimationEvent = (ply, event, data) =>
