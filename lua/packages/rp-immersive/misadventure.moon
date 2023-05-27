@@ -130,10 +130,18 @@ with FindMetaTable 'Player'
 
 hook.Add 'PlayerRagdollCreated', _PKG\GetIdentifier'misadventure', (ply, rag) ->
     ply\SetFallen true
+    ply\SetNotSolid true
+    ply\SetNoTarget true
+    ply\DrawShadow false
+    ply\SetMoveType MOVETYPE_NONE
     nil
 
 hook.Add 'PlayerRagdollRemoved', _PKG\GetIdentifier'misadventure', (ply, rag) ->
     ply\SetFallen false
+    ply\SetNotSolid false
+    ply\SetNoTarget false
+    ply\DrawShadow true
+    ply\SetMoveType MOVETYPE_WALK
     ply\SetPos ply\GetPos! + Vector 0, 0, 16 if ply\IsStuck!
     vel = Vector!
     vel = rag\GetVelocity! if IsValid rag
