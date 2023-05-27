@@ -1,7 +1,21 @@
 {
-    "name": "garrys-package",
+    "name": "rp-immersive",
     "files": {
-        "lua/packages/garrys-package/package.lua": "https://raw.githubusercontent.com/toxidroma/garrys-package/main/lua/packages/garrys-package/package.lua",
-        "lua/packages/garrys-package/init.lua": "https://raw.githubusercontent.com/toxidroma/garrys-package/main/lua/packages/garrys-package/init.lua"
+        "lua/packages/rp-immersive/act.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/act.moon",
+        "lua/packages/rp-immersive/animtable.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/animtable.moon",
+        "lua/packages/rp-immersive/battle.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/battle.moon",
+        "lua/packages/rp-immersive/binds.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/binds.moon",
+        "lua/packages/rp-immersive/crosshair.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/crosshair.moon",
+        "lua/packages/rp-immersive/extension.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/extension.moon",
+        "lua/packages/rp-immersive/hands.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/hands.moon",
+        "lua/packages/rp-immersive/inertia.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/inertia.moon",
+        "lua/packages/rp-immersive/init.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/init.moon",
+        "lua/packages/rp-immersive/inventory.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/inventory.moon",
+        "lua/packages/rp-immersive/misadventure.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/misadventure.moon",
+        "lua/packages/rp-immersive/package.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/package.moon",
+        "lua/packages/rp-immersive/stance.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/stance.moon",
+        "lua/packages/rp-immersive/state.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/state.moon",
+        "lua/packages/rp-immersive/states.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/states.moon",
+        "lua/packages/rp-immersive/things.moon": "https://raw.githubusercontent.com/toxidroma/rp-immersive/main/lua/packages/rp-immersive/things.moon",
     }
 }
