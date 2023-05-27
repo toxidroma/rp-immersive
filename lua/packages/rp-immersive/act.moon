@@ -22,7 +22,10 @@ class
         @ply\Spasm choreo
     Kill: => 
         @ply.Doing = nil
-        @ply\EndState!
+        if @ply\KeyDown IN_ATTACK2
+            @ply\AlterState(STATE.PRIMED) 
+        else
+            @ply\EndState!
         true
     EmitSound: (...) => 
         if IsFirstTimePredicted!

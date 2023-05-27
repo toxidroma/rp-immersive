@@ -1,6 +1,6 @@
-require 'class-war',    'https://github.com/toxidroma/class-war'
-require 'spasm',        'https://github.com/toxidroma/spasm'
-require 'ipr-base',     'https://github.com/Pika-Software/ipr-base'
+install 'class-war',    'https://github.com/toxidroma/class-war'
+install 'spasm',        'https://github.com/toxidroma/spasm'
+install 'ipr-base',     'https://github.com/Pika-Software/ipr-base'
     --provides BIND, PLYCLASS, WEAPON
 
 include'extension.lua'

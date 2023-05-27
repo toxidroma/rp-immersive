@@ -30,3 +30,4 @@ class ACTING extends STATE
     CalcMainActivity: (ply, vel) =>
         if ply\KeyDown IN_ATTACK2
             return PRIMED\CalcMainActivity ply, vel
+        super ply, vel
