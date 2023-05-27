@@ -20,6 +20,11 @@ BIND 'release',
             Release: (ply) => ply\Do ACT.DROP, ply\Wielding! unless ply\StateIs STATE.PRIMED
     }
 
+BIND 'item_use',
+        MOUSE_MIDDLE, {
+            Press: (ply) => ply\Wielding!\Used ply if IsValid(ply\Wielding!) and ply\Wielding!.Used
+    }
+
 hook.Add 'LockTarget', tostring(_PKG), (target) ->
 
 with FindMetaTable 'Player'
