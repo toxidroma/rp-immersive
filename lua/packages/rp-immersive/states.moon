@@ -27,3 +27,6 @@ class ACTING extends STATE
                     \ClearMovement!
                     return true
             return
+    CalcMainActivity: (ply, vel) =>
+        if ply\KeyDown IN_ATTACK2
+            return PRIMED\CalcMainActivity ply, vel

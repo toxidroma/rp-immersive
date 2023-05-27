@@ -32,6 +32,8 @@ class HANDS extends WEAPON
                 return
             ent\OnActUpon ply, @, thing if IsValid(ent) and ent.OnActUpon
         else
+            if ply\StateIs STATE.PRIMED
+                ply\Do ACT.PUNCH
             return unless IsValid ent
             return ent\ActUpon ply, @ if ent.ActUpon
             ply\Do ACT.PICK_UP, ent 
