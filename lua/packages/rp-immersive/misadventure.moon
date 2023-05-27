@@ -150,6 +150,7 @@ hook.Add 'PlayerRagdollRemoved', _PKG\GetIdentifier'misadventure', (ply, rag) ->
 
 hook.Add 'SetupMove', _PKG\GetIdentifier'misadventure', (ply, mv, cmd) ->
     return if ply\GetMoveType! == MOVETYPE_NOCLIP
+    return if ply\GetMoveType! == MOVETYPE_NONE
     unless ply\GetBody!\IsRagdoll!
         vel = ply\GetVelocity!
         speeds = vel\Length!

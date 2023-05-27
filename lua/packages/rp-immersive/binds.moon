@@ -16,7 +16,8 @@ BIND 'space',
     KEY_SPACE, {
         Press: (ply) =>
             with ply
-                return \StandUp! if .StandUp and IsValid ply\GetRagdollEntity!
+                if ply\Alive!
+                    return \StandUp! if .StandUp and IsValid ply\GetRagdollEntity!
                 if \OnGround!
                     unless \DoingSomething!
                         if SERVER or (CLIENT and IsFirstTimePredicted!)

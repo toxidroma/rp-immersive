@@ -196,6 +196,9 @@ class IMMERSIVE extends PLYCLASS
         @Player\SetFallen false
         @Player\CrosshairDisable true
         INVENTORY_SLOTTED\Summon @Player
+        rag = @Player\GetRagdollEntity!
+        if IsValid rag
+            @Player\SetNW2Entity 'improved-player-ragdolls', NULL
     Death: => 
 
     StartCommand: (cmd) => 
@@ -211,7 +214,7 @@ class IMMERSIVE extends PLYCLASS
         return
     FinishMove: (mv) =>
         rag = @Player\GetRagdollEntity!
-        if IsValid rag
+        if @Player\GetFallen! and IsValid rag
             @Player\SetPos rag\GetPos!
             rag.lastVelocity = rag\GetVelocity!
             true

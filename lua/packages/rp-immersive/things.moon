@@ -195,7 +195,10 @@ export class THING extends ENTITY
         @SetTrigger false
         @SetCollisionGroup COLLISION_GROUP_NONE
 
-    @PhysicsCollide: (data, physobj) => @EmitSound @ImpactSound if data.DeltaTime > .2 and data.Speed > 30
+    @PhysicsCollide: (data, physobj) => 
+        if data.DeltaTime > .2 and data.Speed > 30
+            @EmitSound @ImpactSound 
+            @SetCollisionGroup COLLISION_GROUP_WEAPON if @SizeClass <= SIZE_SMALL
 
     @UpdateVisible: =>
         visible = not @InInventory!
@@ -293,6 +296,7 @@ class THROW extends ACT
                 @ply\Release @thing
                 @thing\EmitSound snd
                 vel = @thing.ThrowVelocity
+                @thing\SetCollisionGroup COLLISION_GROUP_PLAYER
                 with @thing\GetPhysicsObject!
                     \SetVelocity @ply\GetVelocity! + (@ply\GetForward! + Vector 0, 0, .1) * @thing.ThrowVelocity * @mult
                     \AddAngleVelocity Vector(vel, random(-vel, vel), 0) unless @thing.SizeClass == SIZE_HUGE
