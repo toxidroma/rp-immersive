@@ -122,10 +122,10 @@ class KICK extends ACT
 											victim\FallOver dmg
 										elseif victim\DoingSomething! and victim.Doing.__class.__parent == ACT.STAND
 											victim\FallOver dmg
-									elseif IsValid victim\GetRagdoll!
-										victim\GetRagdoll!\SetKnockback victim\GetVelocity!, dmg\GetDamageForce!
-								if victim\IsPlayer! and IsValid victim\GetRagdoll!
-									victim = victim\GetRagdoll!
+									--elseif IsValid victim\GetRagdollEntity!
+										--victim\GetRagdollEntity!\SetKnockback victim\GetVelocity!, dmg\GetDamageForce!
+								if victim\IsPlayer! and IsValid victim\GetRagdollEntity!
+									victim = victim\GetRagdollEntity!
 								if victim\IsRagdoll!
 									force *= 4
 									physbone\ApplyForceCenter(force, tr.HitPos)

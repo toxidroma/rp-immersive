@@ -343,7 +343,7 @@ with gmod.GetGamemode!
                 \SetCollisionGroup COLLISION_GROUP_PLAYER
         Wait 0, ->
             hook.Add 'PlayerInitialSpawn', tostring(_PKG), (ply) ->
-                return if ply\Loaded!
+                --return if ply\Loaded!
                 hook.Add 'SetupMove', tostring(_PKG)..ply\UserID!, (ply2, mv, cmd) ->
                     if ply == ply2 and not cmd\IsForced!
                         hook.Remove 'SetupMove', tostring(_PKG)..ply\UserID!
