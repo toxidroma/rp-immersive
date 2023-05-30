@@ -1,7 +1,7 @@
 install 'class-war',    'https://github.com/toxidroma/class-war'
+    --provides BIND, PLAYER, WEAPON
 install 'spasm',        'https://github.com/toxidroma/spasm'
 install 'ipr-base',     'https://github.com/Pika-Software/ipr-base'
-    --provides BIND, PLYCLASS, WEAPON
 
 include'extension.lua'
 
@@ -170,7 +170,7 @@ hook.Add 'SetupPlayerDataTables', tostring(_PKG), (classy) ->
 
 export FOV, FOV_TARGET = 110, 110
 
-class IMMERSIVE extends PLYCLASS
+class IMMERSIVE extends PLAYER
     DisplayName:        'Immersive Player'
     UseDynamicView:     true
     SlowWalkSpeed:      100
