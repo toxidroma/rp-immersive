@@ -1,5 +1,7 @@
+import band from bit
 class IDLE extends STATE
     Think: (ply) => ply\AlterState(STATE.PRIMED) if ply\KeyDown IN_ATTACK2
+    StartCommand: (ply, cmd) => cmd\AddKey IN_USE if band(cmd\GetButtons!, IN_ATTACK) > 0
 
 anims = include'animtable.lua'
 class PRIMED extends STATE
