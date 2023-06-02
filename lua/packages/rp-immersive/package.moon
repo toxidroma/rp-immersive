@@ -2,7 +2,7 @@ export *
 name    = "rp-immersive"
 main    = "init.lua" --the file that is first loaded
 cl_main = nil --if cl_main is set to a file, that is the first file the client loads instead of main
-version = 000200
+version = 000300
 
 --allowed sides to run package, if client is false then the server will not send anything
 client  = true
