@@ -146,6 +146,7 @@ hook.Add 'PlayerRagdollRemoved', _PKG\GetIdentifier'misadventure', (ply, rag) ->
     vel = Vector!
     vel = rag\GetVelocity! if IsValid rag
     ply\SetLocalVelocity vel
+    ply\UnSpectate!
     nil
 
 hook.Add 'SetupMove', _PKG\GetIdentifier'misadventure', (ply, mv, cmd) ->
