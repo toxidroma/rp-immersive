@@ -2,6 +2,7 @@ install 'class-war',    'https://github.com/toxidroma/class-war'
     --provides BIND, PLAYER, WEAPON
 install 'spasm',        'https://github.com/toxidroma/spasm'
 install 'ipr-base',     'https://github.com/Pika-Software/ipr-base'
+install 'vpunch-vbob',  'https://github.com/toxidroma/vpunch-vbob'
 
 include'extension.lua'
 
@@ -199,6 +200,7 @@ class IMMERSIVE extends PLAYER
         rag = @Player\GetRagdollEntity!
         if IsValid rag
             @Player\SetNW2Entity 'improved-player-ragdolls', NULL
+        @Player\UnSpectate!
     Death: => 
 
     StartCommand: (cmd) => 
@@ -247,16 +249,16 @@ class IMMERSIVE extends PLAYER
 
     --CLIENT
     CalcView: (view) =>
-        super view
-        FOV_TARGET = 110
-        if @UseDynamicView
-            view.drawviewer = true
-            view.znear = 1
-        if CROSSHAIR and CROSSHAIR.TARGET and CROSSHAIR.TARGET.inspection
-            FOV_TARGET -= 23
-        FOV = Lerp InQuad(FrameTime!*23), FOV, FOV_TARGET
-        view.fov = FOV
-        view
+        unless super view
+            FOV_TARGET = 110
+            if @UseDynamicView
+                view.drawviewer = true
+                view.znear = 1
+            if CROSSHAIR and CROSSHAIR.TARGET and CROSSHAIR.TARGET.inspection
+                FOV_TARGET -= 23
+            FOV = Lerp InQuad(FrameTime!*23), FOV, FOV_TARGET
+            view.fov = FOV
+            view
     PostDrawOpaqueRenderables: => CROSSHAIR\Run LocalPlayer!\GetInteractTrace!
     ShouldDrawLocal: => true
     InputMouseApply: (cmd, x, y, ang) =>
