@@ -2,7 +2,7 @@ install 'class-war',    'https://github.com/toxidroma/class-war'
     --provides BIND, PLAYER, WEAPON
 install 'spasm',        'https://github.com/toxidroma/spasm'
 install 'ipr-base',     'https://github.com/Pika-Software/ipr-base'
-install 'vpunch-vbob',  'https://github.com/toxidroma/vpunch-vbob'
+install 'vpunch-vbob',  'https://github.com/toxidroma/vpunch-vbob' if CLIENT
 
 include'extension.lua'
 
